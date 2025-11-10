@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Maheer</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./assets/styles.css">
+
+</head>
+
+<body>
+    <audio id="bg-music" src="song.mp3" autoplay="" loop=""></audio>
+
+    <canvas id="bg-canvas" width="1920" height="953" style="width: 1920px; height: 953px;"></canvas>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loader fade-out"></div>
+            <div class="typing-container">
+                <div class="tag-text"><span>M A H E E R</span></div>
+                <div class="tag-text"><span>&lt;</span>Student<span>.</span>&gt;</div>
+                <div class="tag-text"><span>&lt;</span>IT Enthusiast<span>.</span>&gt;</div>
+                <div class="tag-text"><span>&lt;</span>Digital Creator<span>.</span>&gt;</div>
+                <div id="start-btn" class="start-button tag-text">Tap here to Start</div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="content" style="display: none;">
+        <div class="profile-card">
+            <div class="profile-image">
+                <img src="./assets/profile.jpg" alt="Profile Picture" style="object-fit: cover;">
+            </div>
+            <h3> MUHAMMAD MAHEER AL 'ASYI <br> (MAHEER)</h3>
+        </div>
+        <div class="profile-card-2">
+
+            <p class="bio">
+                An Acehnese boy who loves being creative and expressing himself in fun ways. I enjoy learning new
+                things, especially about the internet and technology.
+                <br>
+            </p>
+            <h3><b class="bold">💻 IT Enthusiast</b></h3>
+            <br>
+            As a student, I really love exploring the world of the internet. At first, I just liked playing games and
+            visiting social media. But then I got curious — how do these websites look so amazing and actually work?
+            Now, I’m learning the basics of coding like HTML to understand how websites are built, and a bit of Python
+            to understand how programming works. I’m still learning, but I'm really excited that one day I can be a
+            developer of a cool website or some web application!
+            <br>
+            <br>
+            <h3><b class="bold">🎥 Digital Creator</b></h3>
+            <br>
+            I'm trying to become a digital creator, expressing my creativity through various types of video content on
+            my YouTube channel.
+            This is just the beginning of my journey to continue learning and developing myself in a way that's not only
+            entertaining but also meaningful.
+            <div class="links-container">
+                <button id="nextBtn" class="nav-button">NEXT</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="content-2" style="display: none;">
+        <div class="links-container">
+            <a href="https://maheeralasyi.netlify.app/" class="link-card animate__animated animate__fadeIn"
+                target="_blank">
+                <i class="fas fa-square-root-variable"></i>
+                <span>My Math</span>
+            </a>
+            <a href="https://www.youtube.com/@Frostgold-w" class="link-card animate__animated animate__fadeIn"
+                target="_blank">
+                <i class="fab fa-youtube"></i>
+                <span>Youtube</span>
+            </a>
+            <a href="https://www.tiktok.com/@marx_238" class="link-card animate__animated animate__fadeIn"
+                target="_blank">
+                <i class="fab fa-tiktok"></i>
+                <span>Tiktok</span>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=100095440473392"
+                class="link-card animate__animated animate__fadeIn" target="_blank">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+            </a>
+            <div class="profile-card">
+                <div class="profile-image">
+                    <img src="./assets/profile2.jpg" alt="Profile Picture" style="object-fit: cover;">
+                </div>
+            </div>
+            <button id="backBtn" class="nav-button">BACK</button>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Background Animation
+        try {
+            const canvas = document.getElementById('bg-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Create particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 5000;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 5;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.005,
+                color: '#FFFFFF',
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            camera.position.z = 2;
+
+            let mouseX = 0;
+            let mouseY = 0;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX / window.innerWidth - 0.5;
+                mouseY = event.clientY / window.innerHeight - 0.5;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                particlesMesh.rotation.y += 0.001;
+                particlesMesh.rotation.x += 0.001;
+
+                camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        } catch (error) {
+            console.error('Three.js initialization failed:', error);
+            // Fallback to static background if Three.js fails
+            document.body.style.background = 'linear-gradient(45deg, #1a1a1a, #4a4a4a)';
+        }
+
+        // Loading screen with minimum display time
+        // window.addEventListener('load', function() {
+        //     // Force the loading screen to show for at least 3 seconds
+        //     setTimeout(() => {
+        //         const loadingScreen = document.getElementById('loading-screen');
+        //         const content = document.getElementById('content');
+        //         if (loadingScreen) {
+        //             loadingScreen.style.opacity = '0';
+        //             setTimeout(() => {
+        //                 loadingScreen.style.display = 'none';
+        //             }, 500); // Fade out transition
+        //         }
+        //         if (content) content.style.display = 'block';
+        //     }, 3000); // Show loader for 3 seconds
+        // });
+
+        window.addEventListener('load', function () {
+            const startBtn = document.getElementById('start-btn');
+            const bgMusic = document.getElementById('bg-music');
+            const loadingScreen = document.getElementById('loading-screen');
+            const container1 = document.getElementById('content');
+            const container2 = document.getElementById('content-2');
+
+            startBtn.addEventListener('click', () => {
+                bgMusic.play().catch(console.warn);
+
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    container1.style.display = 'block';
+                }, 500);
+            });
+
+            // Navigasi antar halaman
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                container1.style.display = 'none';
+                container2.style.display = 'block';
+            });
+
+            document.getElementById('backBtn').addEventListener('click', () => {
+                container2.style.display = 'none';
+                container1.style.display = 'block';
+            });
+        });
+        setTimeout(() => {
+            const loader = document.querySelector('.loader');
+            if (loader) {
+                loader.classList.add('fade-out');
+
+                // Setelah transisi selesai (0.5s), sembunyikan dari DOM
+                setTimeout(() => {
+                }, 500);
+            }
+        }, 2500); // tunggu 2.5 detik sebelum mulai fade out
+    </script>
+
+
+</body>
+
+</html>
